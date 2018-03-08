@@ -7,18 +7,18 @@
   
   <title>ArrayList源码阅读笔记 | House Bunker</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="ArrayList源码阅读笔记源码版本JDK1.8.0_131 ArrayList内部是基于数组的动态管理来实现的，容量能自动增长，数组占据内存一块连续的存储空间，对于下标随机访问和遍历非常高效。 ArrayList类定义12public class ArrayList&amp;lt;E&amp;gt; extends AbstractList&amp;lt;E&amp;gt;        implements List&amp;lt">
+  <meta name="description" content="源码版本JDK1.8.0_131 ArrayList内部是基于数组的动态管理来实现的，容量能自动增长，数组占据内存一块连续的存储空间，对于下标随机访问和遍历非常高效。 ArrayList类定义12public class ArrayList&amp;lt;E&amp;gt; extends AbstractList&amp;lt;E&amp;gt;        implements List&amp;lt;E&amp;gt;, RandomA">
 <meta name="keywords" content="Java 源码">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ArrayList源码阅读笔记">
 <meta property="og:url" content="http://yoursite.com/2018/03/08/ArrayList_Source/index.html">
 <meta property="og:site_name" content="House Bunker">
-<meta property="og:description" content="ArrayList源码阅读笔记源码版本JDK1.8.0_131 ArrayList内部是基于数组的动态管理来实现的，容量能自动增长，数组占据内存一块连续的存储空间，对于下标随机访问和遍历非常高效。 ArrayList类定义12public class ArrayList&amp;lt;E&amp;gt; extends AbstractList&amp;lt;E&amp;gt;        implements List&amp;lt">
+<meta property="og:description" content="源码版本JDK1.8.0_131 ArrayList内部是基于数组的动态管理来实现的，容量能自动增长，数组占据内存一块连续的存储空间，对于下标随机访问和遍历非常高效。 ArrayList类定义12public class ArrayList&amp;lt;E&amp;gt; extends AbstractList&amp;lt;E&amp;gt;        implements List&amp;lt;E&amp;gt;, RandomA">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-03-08T14:19:49.737Z">
+<meta property="og:updated_time" content="2018-03-08T14:21:31.502Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ArrayList源码阅读笔记">
-<meta name="twitter:description" content="ArrayList源码阅读笔记源码版本JDK1.8.0_131 ArrayList内部是基于数组的动态管理来实现的，容量能自动增长，数组占据内存一块连续的存储空间，对于下标随机访问和遍历非常高效。 ArrayList类定义12public class ArrayList&amp;lt;E&amp;gt; extends AbstractList&amp;lt;E&amp;gt;        implements List&amp;lt">
+<meta name="twitter:description" content="源码版本JDK1.8.0_131 ArrayList内部是基于数组的动态管理来实现的，容量能自动增长，数组占据内存一块连续的存储空间，对于下标随机访问和遍历非常高效。 ArrayList类定义12public class ArrayList&amp;lt;E&amp;gt; extends AbstractList&amp;lt;E&amp;gt;        implements List&amp;lt;E&amp;gt;, RandomA">
   
     <link rel="alternate" href="/atom.xml" title="House Bunker" type="application/atom+xml">
   
@@ -93,7 +93,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="ArrayList源码阅读笔记"><a href="#ArrayList源码阅读笔记" class="headerlink" title="ArrayList源码阅读笔记"></a>ArrayList源码阅读笔记</h1><p>源码版本JDK1.8.0_131</p>
+        <p>源码版本JDK1.8.0_131</p>
 <p>ArrayList内部是基于数组的动态管理来实现的，容量能自动增长，数组占据内存一块连续的存储空间，对于下标随机访问和遍历非常高效。</p>
 <h2 id="ArrayList类定义"><a href="#ArrayList类定义" class="headerlink" title="ArrayList类定义"></a>ArrayList类定义</h2><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">public <span class="class"><span class="keyword">class</span> <span class="title">ArrayList&lt;E&gt;</span> <span class="keyword">extends</span> <span class="title">AbstractList&lt;E&gt;</span></span></span><br><span class="line"><span class="class">        <span class="title">implements</span> <span class="title">List&lt;E&gt;</span>, <span class="title">RandomAccess</span>, <span class="title">Cloneable</span>, <span class="title">java</span>.<span class="title">io</span>.<span class="title">Serializable</span></span></span><br></pre></td></tr></table></figure>
 <p>从ArrayList类的定义可以看出：</p>
