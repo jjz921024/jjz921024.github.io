@@ -6,3 +6,14 @@ node_modules/
 public/
 .deploy*/
 .git/
+
+2018/
+archives/
+css/
+fancybos/
+images/
+js/
+tags/
+favicon.ico
+index.html
+about/

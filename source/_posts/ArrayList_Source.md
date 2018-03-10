@@ -89,7 +89,7 @@ ArrayList有三种构造函数
 ### (1)添加
 add方法有两种重载，一个是在数组末尾添加，一个是在指定位置添加元素
 
-add(E e)的调用链涉及5个方法, 依次如下：
+> add(E e)的调用链涉及5个方法, 依次如下：
 
 ```
     public boolean add(E e) {
@@ -162,7 +162,7 @@ addAll方法也有两种重载，与add方法相似。将集合追加到末尾�
 ArrayList每次在增加元素时，都会*ensureCapacityInternal*方法来确保容量足够。在容量不够时会调用*Arrays.copyOf*方法将原数组拷贝到新数组中，这是一个非常耗性能的操作。因此建议在确定元素数量时才使用ArraysList，否则建议使用LindedList。
 
 ### (2)移除
-remove方法也有2种重载，一个是移除指定下标的元素，一个是指定元素移除其第一次出现
+> remove方法也有2种重载，一个是移除指定下标的元素，一个是指定元素移除其第一次出现
 ```
     public E remove(int index) {
         rangeCheck(index);  // 越界检查
@@ -208,7 +208,7 @@ remove方法也有2种重载，一个是移除指定下标的元素，一个是�
         elementData[--size] = null; 
     }
 ```
-批量删除
+- 批量删除
 ```
     // 删除与指定集合c中相同的元素
     public boolean removeAll(Collection<?> c) {
@@ -341,6 +341,8 @@ System.arraycopy方法，该方法是一个本地方法，通过调用系统的C
                                         int length);
 ```
 
+---
+
 ## 序列化机制
 ArrayList实现了Serializable接口，本身具备序列化的功能。那为什么ArrayList中存储数据的elementData数组要用transient修饰，并且重写*writeObject*和*readObject*方法？
 
@@ -365,15 +367,52 @@ ArrayList实现了Serializable接口，本身具备序列化的功能。那为�
 
 iterator方法返回的Itr实例是ArrayList的内部类，实现了Iterator接口。
 
-成员变量
+- 成员变量
 ```
     int cursor;       // 指向迭代器下一个值的位置
     int lastRet = -1; // 指向迭代器最后取出元素的位置，没进行遍历时为-1
     int expectedModCount = modCount; //记录初始化迭代器时modCount的值
 ```
-ArrayList的迭代器使用fail-fast机制，在调用add和remove方法时会使modCount++，记录ArrayList发生结构性修改的次数。在调用迭代器的next方法时会检查modCount与expectedModCount是否相等，不等则抛出ConcurrentModificationException异常。从而保证迭代器和ArrayList中**数据一致性**。
+ArrayList的迭代器使用fail-fast机制，在调用add和remove方法时会使modCount++，modCount记录的是ArrayList发生结构性修改的次数。在调用迭代器的next方法时会检查modCount与expectedModCount是否相等，不等则抛出ConcurrentModificationException异常。
+这么做的原因是防止在遍历的过程中由于修改操作，有可能造成ArrayIndexOutOfBoundsException，这样的异常属于设计ArrayList这种动态数组的缺陷，应从设计层面避免。
+举个栗子：
+```
+    // 用户代码
+    ArrayList<String> list = new ArrayList<String>();
+    list.add("a");
+    Iterator<String> iterator = list.iterator();
+        while(iterator.hasNext()){
+            String next = iterator.next();
+            if("a".equals(next))
+                list.remove(next);   
+    }
+    
+    // 迭代器的hasNext方法
+    public boolean hasNext() {
+        return cursor != size();  // 注意这里的判断条件是游标cursor不等于size
+	}
 
-成员方法
+```
+list中只有一个元素，在remove时cursor为1，size已经为0。下一次调用hasNext方法会继续遍历，但数组**有可能**已经越界了。
+*这里有一个疑问，为什么hasNext方法的判断条件不写成cursor <= size()呢？暂时还没答案，等有更深入理解后再补充吧*
+
+还有一种特殊情况这里也记录一下，在遍历时用ArrayList的remove方法(注意并不是iterator提供的remove方法)移除元素，并不会报ConcurrentModificationException
+```
+    // 用户代码
+    ArrayList<String> list = new ArrayList<String>();
+    list.add("a");
+    list.add("b");   
+    Iterator<String> iterator = list.iterator();
+        while(iterator.hasNext()){
+            String next = iterator.next();
+            if("a".equals(next))   //移除的是倒数第二个元素
+                list.remove(next);   
+    }
+```
+当移除的是ArrayList中倒数第二个元素时，remove后curosor的值是原来的size-1，而此时size也变为跟curosor相等。所以当下次遍历调用hasNext方法会结束遍历，并不会继续调用next方法，所以不会去检查modCount，也就不会报异常。
+
+
+- 成员方法
 ```
     public E next() {
         checkForComodification();
@@ -420,7 +459,7 @@ ArrayList的迭代器使用fail-fast机制，在调用add和remove方法时会�
 
 ---
 
- 第一次写技术博客，想法由来已久，与其说是技术博客，不如算是对自己知识的回顾与总结。
+> 第一次写技术博客，想法由来已久，与其说是技术博客，不如算是对自己知识的回顾与总结。
  写的过程中，发现很久知识已经生疏，整理的时候又有新的认识。
  过程中也查了很多资料，借鉴了下面两篇文章，在这里向作者表达感谢。
 ## 参考资料
