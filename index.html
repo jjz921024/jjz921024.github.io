@@ -369,7 +369,7 @@
 <li>网页黑名单系统</li>
 </ol>
 <hr>
-<p>##算法思想<br>创建一个m位的BitSet，先将所有位初始化为0，然后选择k个不同的哈希函数。第i个哈希函数对元素e哈希的结果记为h(i,e)，且h(i,e)的范围是0到m-1。</p>
+<h2 id="算法思想"><a href="#算法思想" class="headerlink" title="算法思想"></a>算法思想</h2><p>创建一个m位的BitSet，先将所有位初始化为0，然后选择k个不同的哈希函数。第i个哈希函数对元素e哈希的结果记为h(i,e)，且h(i,e)的范围是0到m-1。</p>
 <ul>
 <li><p>加入元素的过程<br>先对元素e分别计算k个哈希函数h(1,e)，h(2,e)，…，h(k,e)的值，然后将BitSet的h(1,e)，h(2,e)，…，h(k,e)为置为1。最后再加入到集合中。<br><img src="http://p5aycqumd.bkt.clouddn.com/18-3-12/28382771.jpg" alt="Bloom Fliter添加过程"><br>(图片来源于网络，侵删)</p>
 </li>
@@ -382,7 +382,7 @@
 </ul>
 <p><strong>注意：</strong>删除时必须保证元素是在集合中的，这点单凭布隆过滤器无法判断，需要到集合中检索。</p>
 <hr>
-<p>##参数选择<br>如何根据预测输入元素n的级别和期望失误率p确定布隆过滤器bitSet的大小m和哈希函数的个数k。它们之间存在最优解的情况，直接给出公式<br>$$m=-\frac{(n \times \ln p)} {(\ln2)^2}$$<br>$$k=\ln 2 \times \frac {m} {n}$$<br>布隆过滤器的真实失误率为：<br>$$p=(1-e^{-\frac {nk} {m}})$$</p>
+<h2 id="参数选择"><a href="#参数选择" class="headerlink" title="参数选择"></a>参数选择</h2><p>如何根据预测输入元素n的级别和期望失误率p确定布隆过滤器bitSet的大小m和哈希函数的个数k。它们之间存在最优解的情况，直接给出公式<br>$$m=-\frac{(n \times \ln p)} {(\ln2)^2}$$<br>$$k=\ln 2 \times \frac {m} {n}$$<br>布隆过滤器的真实失误率为：<br>$$p=(1-e^{-\frac {nk} {m}})$$</p>
 <hr>
 <h2 id="源码实现"><a href="#源码实现" class="headerlink" title="源码实现"></a>源码实现</h2><p>这是一个用Java简单实现的布隆过滤器<a href="https://github.com/jjz921024/AlgoCode/blob/master/src/other/BloomFilter.java" target="_blank" rel="noopener">Github</a>。该实现能根据期望失误率和预测输入元素级别，计算最优参数构造布隆过滤器。</p>
 <h2 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h2><p><a href="https://book.douban.com/subject/26638586/" target="_blank" rel="noopener">程序员代码面试指南</a></p>
