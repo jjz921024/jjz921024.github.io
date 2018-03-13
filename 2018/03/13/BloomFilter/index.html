@@ -112,7 +112,7 @@
 <meta property="og:description" content="布隆过滤器是一种多哈希函数映射的快速查找算法，实际由一个二进制向量和一系列hash函数组成。主要用于检索一个元素是否属于集合，但并不严格要求100%正确的场合。  优点：空间和时间效率上远超一般算法，适合大数据场景 缺点：存在一定误识别率(即假正例，False positives)，集合的元素删除困难  典型的应用场景有：  爬虫的url判重 垃圾邮件过滤 网页黑名单系统   算法思想创建一个m位">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://p5aycqumd.bkt.clouddn.com/18-3-12/28382771.jpg">
-<meta property="og:updated_time" content="2018-03-13T08:42:02.598Z">
+<meta property="og:updated_time" content="2018-03-13T08:47:49.115Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="谈谈Bloom Filter">
 <meta name="twitter:description" content="布隆过滤器是一种多哈希函数映射的快速查找算法，实际由一个二进制向量和一系列hash函数组成。主要用于检索一个元素是否属于集合，但并不严格要求100%正确的场合。  优点：空间和时间效率上远超一般算法，适合大数据场景 缺点：存在一定误识别率(即假正例，False positives)，集合的元素删除困难  典型的应用场景有：  爬虫的url判重 垃圾邮件过滤 网页黑名单系统   算法思想创建一个m位">
@@ -381,7 +381,7 @@
 </ul>
 <p><strong>注意：</strong>删除时必须保证元素是在集合中的，这点单凭布隆过滤器无法判断，需要到集合中检索。</p>
 <hr>
-<h2 id="参数选择"><a href="#参数选择" class="headerlink" title="参数选择"></a>参数选择</h2><p>如何根据预测输入元素n的级别和期望失误率p确定布隆过滤器bitSet的大小m和哈希函数的个数k。它们之间存在最优解的情况，直接给出公式<br>$$m=-\frac{(n \times \ln p)} {(\ln2)^2}$$<br>$$k=\ln 2 \times \frac {m} {n}$$<br>布隆过滤器的真实失误率为：<br>$$p=(1-e^{-\frac {nk} {m}})$$</p>
+<h2 id="参数选择"><a href="#参数选择" class="headerlink" title="参数选择"></a>参数选择</h2><p>如何根据预测输入元素n的级别和期望失误率p确定布隆过滤器bitSet的大小m和哈希函数的个数k。它们之间存在最优解的情况，直接给出公式<br>$$ m=-\frac{(n \times \ln p)} {(\ln2)^2} $$<br>$$ k=\ln 2 \times \frac {m} {n} $$<br>布隆过滤器的真实失误率为：<br>$$ p=(1-e^{-\frac {nk} {m}}) $$</p>
 <hr>
 <h2 id="源码实现"><a href="#源码实现" class="headerlink" title="源码实现"></a>源码实现</h2><p>这是一个用Java简单实现的布隆过滤器<a href="https://github.com/jjz921024/AlgoCode/blob/master/src/other/BloomFilter.java" target="_blank" rel="noopener">Github</a>。该实现能根据期望失误率和预测输入元素级别，计算最优参数构造布隆过滤器。</p>
 <h2 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h2><p><a href="https://book.douban.com/subject/26638586/" target="_blank" rel="noopener">程序员代码面试指南</a></p>
@@ -761,6 +761,36 @@
   
 
   
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+    
+  
+
 
   
   
