@@ -81,4 +81,5 @@ deploy:
   repository: git@github.com:jjz921024/jjz921024.github.io.git
   branch: master
 
-disqus_shortname:
+
+
