@@ -103,27 +103,30 @@
   <meta name="keywords" content="算法," />
 
 
-<meta name="description" content="布隆过滤器是一种多哈希函数映射的快速查找算法，实际由一个二进制向量和一系列hash函数组成。主要用于检索一个元素是否属于集合，但并不严格要求100%正确的场合。  优点：空间和时间效率上远超一般算法，适合大数据场景 缺点：存在一定误识别率(即假正例，False positives)，集合的元素删除困难  典型的应用场景有：  爬虫的url判重 垃圾邮件过滤 网页黑名单系统   算法思想创建一个m位">
+<meta name="description" content="问题引入传统数据库集群设计时的主要策略是，将数据的id通过哈希函数转换成一个哈希值key，然后对机器数量N取模，得到数据的存放位置。由此带来的问题是，当增加、删除机器或机器宕机时需要对所有数据id重新进行一遍哈希，然后进行大量的数据迁移。 为了解决分布式集群容量变化时带来的大量数据迁移问题，引入一致性哈希算法。  算法思想 把全量的缓存空间当作一个环形存储结构，环形空间总共分成2^32个区域。每个">
 <meta name="keywords" content="算法">
 <meta property="og:type" content="article">
-<meta property="og:title" content="谈谈Bloom Filter">
-<meta property="og:url" content="http://yoursite.com/2018/03/13/BloomFilter/index.html">
+<meta property="og:title" content="谈谈一致性哈希算法">
+<meta property="og:url" content="http://yoursite.com/2018/03/16/ConsistentHash/index.html">
 <meta property="og:site_name" content="House Bunker">
-<meta property="og:description" content="布隆过滤器是一种多哈希函数映射的快速查找算法，实际由一个二进制向量和一系列hash函数组成。主要用于检索一个元素是否属于集合，但并不严格要求100%正确的场合。  优点：空间和时间效率上远超一般算法，适合大数据场景 缺点：存在一定误识别率(即假正例，False positives)，集合的元素删除困难  典型的应用场景有：  爬虫的url判重 垃圾邮件过滤 网页黑名单系统   算法思想创建一个m位">
+<meta property="og:description" content="问题引入传统数据库集群设计时的主要策略是，将数据的id通过哈希函数转换成一个哈希值key，然后对机器数量N取模，得到数据的存放位置。由此带来的问题是，当增加、删除机器或机器宕机时需要对所有数据id重新进行一遍哈希，然后进行大量的数据迁移。 为了解决分布式集群容量变化时带来的大量数据迁移问题，引入一致性哈希算法。  算法思想 把全量的缓存空间当作一个环形存储结构，环形空间总共分成2^32个区域。每个">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://p5aycqumd.bkt.clouddn.com/18-3-12/28382771.jpg">
-<meta property="og:updated_time" content="2018-03-13T08:47:49.115Z">
+<meta property="og:image" content="http://p5aycqumd.bkt.clouddn.com/18-3-13/41061491.jpg">
+<meta property="og:image" content="http://p5aycqumd.bkt.clouddn.com/18-3-13/81362192.jpg">
+<meta property="og:image" content="http://p5aycqumd.bkt.clouddn.com/18-3-13/67570475.jpg">
+<meta property="og:image" content="http://p5aycqumd.bkt.clouddn.com/18-3-13/13652786.jpg">
+<meta property="og:updated_time" content="2018-03-16T14:33:35.959Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="谈谈Bloom Filter">
-<meta name="twitter:description" content="布隆过滤器是一种多哈希函数映射的快速查找算法，实际由一个二进制向量和一系列hash函数组成。主要用于检索一个元素是否属于集合，但并不严格要求100%正确的场合。  优点：空间和时间效率上远超一般算法，适合大数据场景 缺点：存在一定误识别率(即假正例，False positives)，集合的元素删除困难  典型的应用场景有：  爬虫的url判重 垃圾邮件过滤 网页黑名单系统   算法思想创建一个m位">
-<meta name="twitter:image" content="http://p5aycqumd.bkt.clouddn.com/18-3-12/28382771.jpg">
+<meta name="twitter:title" content="谈谈一致性哈希算法">
+<meta name="twitter:description" content="问题引入传统数据库集群设计时的主要策略是，将数据的id通过哈希函数转换成一个哈希值key，然后对机器数量N取模，得到数据的存放位置。由此带来的问题是，当增加、删除机器或机器宕机时需要对所有数据id重新进行一遍哈希，然后进行大量的数据迁移。 为了解决分布式集群容量变化时带来的大量数据迁移问题，引入一致性哈希算法。  算法思想 把全量的缓存空间当作一个环形存储结构，环形空间总共分成2^32个区域。每个">
+<meta name="twitter:image" content="http://p5aycqumd.bkt.clouddn.com/18-3-13/41061491.jpg">
 
 
 
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/03/13/BloomFilter/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/03/16/ConsistentHash/"/>
 
 
 
@@ -132,7 +135,7 @@
     sidebar: "",
   };
 </script>
-  <title>谈谈Bloom Filter | House Bunker</title>
+  <title>谈谈一致性哈希算法 | House Bunker</title>
   
 
 
@@ -279,7 +282,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/13/BloomFilter/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/16/ConsistentHash/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="JJz">
@@ -296,7 +299,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">谈谈Bloom Filter</h1>
+          <h1 class="post-title" itemprop="name headline">谈谈一致性哈希算法</h1>
         
 
         <div class="post-meta">
@@ -308,7 +311,7 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-13T16:36:05+08:00">2018-03-13</time>
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-16T22:28:26+08:00">2018-03-16</time>
             
 
             
@@ -326,9 +329,9 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/03/13/BloomFilter/#comments" itemprop="discussionUrl">
+                <a href="/2018/03/16/ConsistentHash/#comments" itemprop="discussionUrl">
                   <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2018/03/13/BloomFilter/" itemprop="commentCount"></span>
+                        data-disqus-identifier="2018/03/16/ConsistentHash/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -356,35 +359,37 @@
       
 
       
-        <p><strong>布隆过滤器</strong>是一种多哈希函数映射的快速查找算法，实际由一个二进制向量和一系列hash函数组成。主要用于检索一个元素是否属于集合，但并不严格要求100%正确的场合。</p>
-<ul>
-<li>优点：空间和时间效率上远超一般算法，适合大数据场景</li>
-<li>缺点：存在一定误识别率(即假正例，False positives)，集合的元素删除困难</li>
-</ul>
-<p>典型的应用场景有：</p>
-<ol>
-<li>爬虫的url判重</li>
-<li>垃圾邮件过滤</li>
-<li>网页黑名单系统</li>
+        <h2 id="问题引入"><a href="#问题引入" class="headerlink" title="问题引入"></a>问题引入</h2><p>传统数据库集群设计时的主要策略是，将数据的id通过哈希函数转换成一个哈希值key，然后对机器数量N取模，得到数据的存放位置。由此带来的问题是，当增加、删除机器或机器宕机时需要对所有数据id重新进行一遍哈希，然后进行大量的数据迁移。</p>
+<p>为了解决分布式集群容量变化时带来的大量数据迁移问题，引入一致性哈希算法。</p>
+<hr>
+<h2 id="算法思想"><a href="#算法思想" class="headerlink" title="算法思想"></a>算法思想</h2><ol>
+<li><p>把全量的缓存空间当作一个环形存储结构，环形空间总共分成2^32个区域。每个数据的id都可以通过hash函数转换成一个0~(2^32)-1的数字，并对应到环形空间的一个区域。每台机器也遵循相同hash算法，根据机器IP或域名映射到环形空间。</p>
+</li>
+<li><p>离每一个数据的哈希值key的顺时针方向最近的节点，负责存储该key的数据。实现将数据和节点对应起来。<br><img src="http://p5aycqumd.bkt.clouddn.com/18-3-13/41061491.jpg" alt="数据与节点对应关系">(本文章多次引用了<a href="https://mp.weixin.qq.com/s/yimfkNYF_tIJJqUIzV7TFA" target="_blank" rel="noopener">程序员小灰</a>中的图片，侵删)</p>
+</li>
+<li><p>节点变化<br>当集群节点变化时，只会引起一小部分的数据迁移。<br>新增节点时的变化情况：<br><img src="http://p5aycqumd.bkt.clouddn.com/18-3-13/81362192.jpg" alt="新增节点"><br>移除节点时的变化情况：<br><img src="http://p5aycqumd.bkt.clouddn.com/18-3-13/67570475.jpg" alt="移除节点"></p>
+</li>
 </ol>
-<hr>
-<h2 id="算法思想"><a href="#算法思想" class="headerlink" title="算法思想"></a>算法思想</h2><p>创建一个m位的BitSet，先将所有位初始化为0，然后选择k个不同的哈希函数。第i个哈希函数对元素e哈希的结果记为h(i,e)，且h(i,e)的范围是0到m-1。</p>
+<h3 id="虚拟节点"><a href="#虚拟节点" class="headerlink" title="虚拟节点"></a>虚拟节点</h3><p>当机器较少时，机器的哈希值很大可能不能均匀分布在哈希环上，就会出现负载不均衡的情况。</p>
+<p>一致性哈希算法引入虚拟节点机制来解决这种数据倾斜的问题。即对每一台机器通过多个哈希函数映射到多个位置，这些位置上的节点称为虚拟节点。（也可以通过在IP或域名后增加编号后缀再通过同一哈希函数映射到不同位置）<br><img src="http://p5aycqumd.bkt.clouddn.com/18-3-13/13652786.jpg" alt="虚拟节点"></p>
 <ul>
-<li><p>加入元素的过程<br>先对元素e分别计算k个哈希函数h(1,e)，h(2,e)，…，h(k,e)的值，然后将BitSet的h(1,e)，h(2,e)，…，h(k,e)为置为1。最后再加入到集合中。<br><img src="http://p5aycqumd.bkt.clouddn.com/18-3-12/28382771.jpg" alt="Bloom Fliter添加过程"><br>(图片来源于网络，侵删)</p>
-</li>
-<li><p>检索元素是否存在<br>同样先对元素e分别计算k个哈希函数h(1,e)，h(2,e)，…，h(k,e)的值，然后检查BitSet的第h(1,e)，h(2,e)，…，h(k,e)是否为1。若其中任何一位不为1则判定该元素没有被记录过，若全部都为1则可认为元素存在。</p>
+<li>在增加节点时，会打破原来负载均衡的情况，新增节点会从原有节点分流数据的情况。把新增一个物理节点拆分成多个虚拟节点并均匀分布在哈希环上可以有效解决这个问题。</li>
+<li>在移除节点时，也会造成负载不均衡的情况。但当移除的物理节点已经被拆分成多个虚拟节点时，数据倾斜的情况也会减小很多。</li>
+</ul>
+<p><em>注意：</em>这是指的“数据迁移”实际是指key的路由情况。在数据库集群场景下，可以是根据key值决定数据存储位置，集群变化时根据key指定决定是否将该数据进行迁移；在服务应用集群场景下，可以是根据请求url进行分流。</p>
+<hr>
+<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><p>实现一致性哈希算法主要是考虑哈希环的数据结构，哈希环上存储的是机器的哈希值。当有数据需要路由时，查找哈希环上大于待路由数据哈希值且最小的值，即为该数据路由的目标机器。</p>
+<p>考虑机器集群是动态变化的，因此数据结构不适合选择数组。适合的数据结构有List和树，下面分析两种实现方案：</p>
+<ul>
+<li>List列表<br>将机器节点的hash值放入List，然后进行排序。待路由数据只需在List中找到第一个hash值大于它的机器节点即可。这样问题就变成了类似有序表查找。<ul>
+<li>查找的算法可以用：顺序查找O(N)、二分查找O(logN)、跳表O(logN)</li>
+</ul>
 </li>
 </ul>
-<p><strong>注意：</strong>若元素对应的bit全为1，实际上不能100%肯定该元素被布隆过滤器记录，因为有可能该元素对于的所有bit刚好被其他元素覆盖。</p>
+<p>因此，排序+查找时间复杂度总共为O(N*logN)</p>
 <ul>
-<li>删除过程<br>布隆过滤器是不支持删除操作的，因为删除会影响到其他元素的检索。但有一种Bloom Filter的变体Counting Bloomfilter支持删除操作，CBF实际是将Bloom Filter的每一位Bit改为一个计数器，添加时将对于位加1，删除时减1。</li>
+<li>树<br>节点的hash值有自然顺序，并且要求查找时间复杂度低。因此可以使用二叉查找树作为保存节点hash值的数据结构。JDK的TreeSet和TreeMap提供了红黑树的实现。</li>
 </ul>
-<p><strong>注意：</strong>删除时必须保证元素是在集合中的，这点单凭布隆过滤器无法判断，需要到集合中检索。</p>
-<hr>
-<h2 id="参数选择"><a href="#参数选择" class="headerlink" title="参数选择"></a>参数选择</h2><p>如何根据预测输入元素n的级别和期望失误率p确定布隆过滤器bitSet的大小m和哈希函数的个数k。它们之间存在最优解的情况，直接给出公式<br>$$ m=-\frac{(n \times \ln p)} {(\ln2)^2} $$<br>$$ k=\ln 2 \times \frac {m} {n} $$<br>布隆过滤器的真实失误率为：<br>$$ p=(1-e^{-\frac {nk} {m}}) $$</p>
-<hr>
-<h2 id="源码实现"><a href="#源码实现" class="headerlink" title="源码实现"></a>源码实现</h2><p>这是一个用Java简单实现的布隆过滤器<a href="https://github.com/jjz921024/AlgoCode/blob/master/src/other/BloomFilter.java" target="_blank" rel="noopener">Github</a>。该实现能根据期望失误率和预测输入元素级别，计算最优参数构造布隆过滤器。</p>
-<h2 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h2><p><a href="https://book.douban.com/subject/26638586/" target="_blank" rel="noopener">程序员代码面试指南</a></p>
 
       
     </div>
@@ -418,8 +423,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/03/11/LinkedList-Source/" rel="next" title="LinkedList源码阅读笔记">
-                <i class="fa fa-chevron-left"></i> LinkedList源码阅读笔记
+              <a href="/2018/03/13/BloomFilter/" rel="next" title="谈谈Bloom Filter">
+                <i class="fa fa-chevron-left"></i> 谈谈Bloom Filter
               </a>
             
           </div>
@@ -427,10 +432,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/03/16/ConsistentHash/" rel="prev" title="谈谈一致性哈希算法">
-                谈谈一致性哈希算法 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -541,7 +542,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#算法思想"><span class="nav-number">1.</span> <span class="nav-text">算法思想</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参数选择"><span class="nav-number">2.</span> <span class="nav-text">参数选择</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#源码实现"><span class="nav-number">3.</span> <span class="nav-text">源码实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考文章"><span class="nav-number">4.</span> <span class="nav-text">参考文章</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#问题引入"><span class="nav-number">1.</span> <span class="nav-text">问题引入</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#算法思想"><span class="nav-number">2.</span> <span class="nav-text">算法思想</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#虚拟节点"><span class="nav-number">2.1.</span> <span class="nav-text">虚拟节点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码实现"><span class="nav-number">3.</span> <span class="nav-text">代码实现</span></a></li></ol></div>
             
 
           </div>
@@ -695,9 +696,9 @@
   
     <script type="text/javascript">
       var disqus_config = function () {
-        this.page.url = 'http://yoursite.com/2018/03/13/BloomFilter/';
-        this.page.identifier = '2018/03/13/BloomFilter/';
-        this.page.title = '谈谈Bloom Filter';
+        this.page.url = 'http://yoursite.com/2018/03/16/ConsistentHash/';
+        this.page.identifier = '2018/03/16/ConsistentHash/';
+        this.page.title = '谈谈一致性哈希算法';
       };
       function loadComments () {
         var d = document, s = d.createElement('script');
@@ -770,29 +771,6 @@
   
   
 
-  
-    
-      <script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-      tex2jax: {
-        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-        processEscapes: true,
-        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-      }
-    });
-</script>
-
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Queue(function() {
-      var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-    });
-</script>
-<script type="text/javascript" src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-
-    
   
 
 
