@@ -111,15 +111,15 @@
 <meta property="og:site_name" content="House Bunker">
 <meta property="og:description" content="问题引入传统数据库集群设计时的主要策略是，将数据的id通过哈希函数转换成一个哈希值key，然后对机器数量N取模，得到数据的存放位置。由此带来的问题是，当增加、删除机器或机器宕机时需要对所有数据id重新进行一遍哈希，然后进行大量的数据迁移。 为了解决分布式集群容量变化时带来的大量数据迁移问题，引入一致性哈希算法。  算法思想 把全量的缓存空间当作一个环形存储结构，环形空间总共分成2^32个区域。每个">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://p5aycqumd.bkt.clouddn.com/18-3-13/41061491.jpg">
-<meta property="og:image" content="http://p5aycqumd.bkt.clouddn.com/18-3-13/81362192.jpg">
-<meta property="og:image" content="http://p5aycqumd.bkt.clouddn.com/18-3-13/67570475.jpg">
-<meta property="og:image" content="http://p5aycqumd.bkt.clouddn.com/18-3-13/13652786.jpg">
-<meta property="og:updated_time" content="2018-03-16T14:33:35.959Z">
+<meta property="og:image" content="http://p5aycqumd.bkt.clouddn.com/consistenthash/41061491.jpg">
+<meta property="og:image" content="http://p5aycqumd.bkt.clouddn.com/consistenthash/81362192.jpg">
+<meta property="og:image" content="http://p5aycqumd.bkt.clouddn.com/consistenthash/67570475.jpg">
+<meta property="og:image" content="http://p5aycqumd.bkt.clouddn.com/consistenthash/13652786.jpg">
+<meta property="og:updated_time" content="2018-03-20T04:13:13.605Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="谈谈一致性哈希算法">
 <meta name="twitter:description" content="问题引入传统数据库集群设计时的主要策略是，将数据的id通过哈希函数转换成一个哈希值key，然后对机器数量N取模，得到数据的存放位置。由此带来的问题是，当增加、删除机器或机器宕机时需要对所有数据id重新进行一遍哈希，然后进行大量的数据迁移。 为了解决分布式集群容量变化时带来的大量数据迁移问题，引入一致性哈希算法。  算法思想 把全量的缓存空间当作一个环形存储结构，环形空间总共分成2^32个区域。每个">
-<meta name="twitter:image" content="http://p5aycqumd.bkt.clouddn.com/18-3-13/41061491.jpg">
+<meta name="twitter:image" content="http://p5aycqumd.bkt.clouddn.com/consistenthash/41061491.jpg">
 
 
 
@@ -365,13 +365,13 @@
 <h2 id="算法思想"><a href="#算法思想" class="headerlink" title="算法思想"></a>算法思想</h2><ol>
 <li><p>把全量的缓存空间当作一个环形存储结构，环形空间总共分成2^32个区域。每个数据的id都可以通过hash函数转换成一个0~(2^32)-1的数字，并对应到环形空间的一个区域。每台机器也遵循相同hash算法，根据机器IP或域名映射到环形空间。</p>
 </li>
-<li><p>离每一个数据的哈希值key的顺时针方向最近的节点，负责存储该key的数据。实现将数据和节点对应起来。<br><img src="http://p5aycqumd.bkt.clouddn.com/18-3-13/41061491.jpg" alt="数据与节点对应关系">(本文章多次引用了<a href="https://mp.weixin.qq.com/s/yimfkNYF_tIJJqUIzV7TFA" target="_blank" rel="noopener">程序员小灰</a>中的图片，侵删)</p>
+<li><p>离每一个数据的哈希值key的顺时针方向最近的节点，负责存储该key的数据。实现将数据和节点对应起来。<br><img src="http://p5aycqumd.bkt.clouddn.com/consistenthash/41061491.jpg" alt="数据与节点对应关系">(本文章多次引用了<a href="https://mp.weixin.qq.com/s/yimfkNYF_tIJJqUIzV7TFA" target="_blank" rel="noopener">程序员小灰</a>中的图片，侵删)</p>
 </li>
-<li><p>节点变化<br>当集群节点变化时，只会引起一小部分的数据迁移。<br>新增节点时的变化情况：<br><img src="http://p5aycqumd.bkt.clouddn.com/18-3-13/81362192.jpg" alt="新增节点"><br>移除节点时的变化情况：<br><img src="http://p5aycqumd.bkt.clouddn.com/18-3-13/67570475.jpg" alt="移除节点"></p>
+<li><p>节点变化<br>当集群节点变化时，只会引起一小部分的数据迁移。<br>新增节点时的变化情况：<br><img src="http://p5aycqumd.bkt.clouddn.com/consistenthash/81362192.jpg" alt="新增节点"><br>移除节点时的变化情况：<br><img src="http://p5aycqumd.bkt.clouddn.com/consistenthash/67570475.jpg" alt="移除节点"></p>
 </li>
 </ol>
 <h3 id="虚拟节点"><a href="#虚拟节点" class="headerlink" title="虚拟节点"></a>虚拟节点</h3><p>当机器较少时，机器的哈希值很大可能不能均匀分布在哈希环上，就会出现负载不均衡的情况。</p>
-<p>一致性哈希算法引入虚拟节点机制来解决这种数据倾斜的问题。即对每一台机器通过多个哈希函数映射到多个位置，这些位置上的节点称为虚拟节点。（也可以通过在IP或域名后增加编号后缀再通过同一哈希函数映射到不同位置）<br><img src="http://p5aycqumd.bkt.clouddn.com/18-3-13/13652786.jpg" alt="虚拟节点"></p>
+<p>一致性哈希算法引入虚拟节点机制来解决这种数据倾斜的问题。即对每一台机器通过多个哈希函数映射到多个位置，这些位置上的节点称为虚拟节点。（也可以通过在IP或域名后增加编号后缀再通过同一哈希函数映射到不同位置）<br><img src="http://p5aycqumd.bkt.clouddn.com/consistenthash/13652786.jpg" alt="虚拟节点"></p>
 <ul>
 <li>在增加节点时，会打破原来负载均衡的情况，新增节点会从原有节点分流数据的情况。把新增一个物理节点拆分成多个虚拟节点并均匀分布在哈希环上可以有效解决这个问题。</li>
 <li>在移除节点时，也会造成负载不均衡的情况。但当移除的物理节点已经被拆分成多个虚拟节点时，数据倾斜的情况也会减小很多。</li>
@@ -400,6 +400,7 @@
     
     
 
+<div style="text-align:center;color: #ccc;font-size:14px;">---------------- The End ----------------</div>
     
 
     
@@ -784,6 +785,8 @@
   
 
   
+
+
 
 </body>
 </html>

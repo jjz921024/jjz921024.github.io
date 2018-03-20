@@ -111,12 +111,12 @@
 <meta property="og:site_name" content="House Bunker">
 <meta property="og:description" content="布隆过滤器是一种多哈希函数映射的快速查找算法，实际由一个二进制向量和一系列hash函数组成。主要用于检索一个元素是否属于集合，但并不严格要求100%正确的场合。  优点：空间和时间效率上远超一般算法，适合大数据场景 缺点：存在一定误识别率(即假正例，False positives)，集合的元素删除困难  典型的应用场景有：  爬虫的url判重 垃圾邮件过滤 网页黑名单系统   算法思想创建一个m位">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://p5aycqumd.bkt.clouddn.com/18-3-12/28382771.jpg">
-<meta property="og:updated_time" content="2018-03-13T08:47:49.115Z">
+<meta property="og:image" content="http://p5aycqumd.bkt.clouddn.com/bloomfilter/28382771.jpg">
+<meta property="og:updated_time" content="2018-03-20T04:09:51.145Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="谈谈Bloom Filter">
 <meta name="twitter:description" content="布隆过滤器是一种多哈希函数映射的快速查找算法，实际由一个二进制向量和一系列hash函数组成。主要用于检索一个元素是否属于集合，但并不严格要求100%正确的场合。  优点：空间和时间效率上远超一般算法，适合大数据场景 缺点：存在一定误识别率(即假正例，False positives)，集合的元素删除困难  典型的应用场景有：  爬虫的url判重 垃圾邮件过滤 网页黑名单系统   算法思想创建一个m位">
-<meta name="twitter:image" content="http://p5aycqumd.bkt.clouddn.com/18-3-12/28382771.jpg">
+<meta name="twitter:image" content="http://p5aycqumd.bkt.clouddn.com/bloomfilter/28382771.jpg">
 
 
 
@@ -370,7 +370,7 @@
 <hr>
 <h2 id="算法思想"><a href="#算法思想" class="headerlink" title="算法思想"></a>算法思想</h2><p>创建一个m位的BitSet，先将所有位初始化为0，然后选择k个不同的哈希函数。第i个哈希函数对元素e哈希的结果记为h(i,e)，且h(i,e)的范围是0到m-1。</p>
 <ul>
-<li><p>加入元素的过程<br>先对元素e分别计算k个哈希函数h(1,e)，h(2,e)，…，h(k,e)的值，然后将BitSet的h(1,e)，h(2,e)，…，h(k,e)为置为1。最后再加入到集合中。<br><img src="http://p5aycqumd.bkt.clouddn.com/18-3-12/28382771.jpg" alt="Bloom Fliter添加过程"><br>(图片来源于网络，侵删)</p>
+<li><p>加入元素的过程<br>先对元素e分别计算k个哈希函数h(1,e)，h(2,e)，…，h(k,e)的值，然后将BitSet的h(1,e)，h(2,e)，…，h(k,e)为置为1。最后再加入到集合中。<br><img src="http://p5aycqumd.bkt.clouddn.com/bloomfilter/28382771.jpg" alt="Bloom Fliter添加过程"><br>(图片来源于网络，侵删)</p>
 </li>
 <li><p>检索元素是否存在<br>同样先对元素e分别计算k个哈希函数h(1,e)，h(2,e)，…，h(k,e)的值，然后检查BitSet的第h(1,e)，h(2,e)，…，h(k,e)是否为1。若其中任何一位不为1则判定该元素没有被记录过，若全部都为1则可认为元素存在。</p>
 </li>
@@ -395,6 +395,7 @@
     
     
 
+<div style="text-align:center;color: #ccc;font-size:14px;">---------------- The End ----------------</div>
     
 
     
@@ -806,6 +807,8 @@
   
 
   
+
+
 
 </body>
 </html>
