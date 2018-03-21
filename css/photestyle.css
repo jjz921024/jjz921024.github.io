@@ -4,7 +4,7 @@
 *************************************************************************/
 .aviaslider{
     height:320px; 	/*this changes the height of the image slider*/
-    width:640px;
+    width:600px;
     overflow: hidden;
     position: relative;
     background: #fff url(../images/layout/preload.gif) center center no-repeat;
