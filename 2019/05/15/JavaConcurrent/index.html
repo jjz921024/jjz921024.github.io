@@ -105,8 +105,8 @@
 <meta property="og:description" content="Java并发编程学习笔记——理论基础并发的三个核心问题 分工 同步 互斥  微观层面    CPU增加缓存，以均衡与内存的速度差异。 缓存带来可见性问题 可见性：一个线程对共享变量的修改，另外一个线程能够立即看到  操作系统增加进程线程，分时复用CPU，均衡与IO设备的速度差异。 线程切换带来原子性问题 原子性：一个或多个操作在CPU执行过程中不被中断的特性  例如：count += 1； 32位">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://github.com/jjz921024/jjz921024.github.io/raw/master/images/concurrent/javaconcurrent.png">
-<meta property="og:image" content="https://github.com/jjz921024/jjz921024.github.io/tree/master/images/concurrent/guancheng.png">
-<meta property="og:updated_time" content="2019-06-08T18:13:54.429Z">
+<meta property="og:image" content="https://github.com/jjz921024/jjz921024.github.io/raw/master/images/concurrent/guancheng.png">
+<meta property="og:updated_time" content="2019-06-08T18:16:18.133Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java并发编程——理论基础">
 <meta name="twitter:description" content="Java并发编程学习笔记——理论基础并发的三个核心问题 分工 同步 互斥  微观层面    CPU增加缓存，以均衡与内存的速度差异。 缓存带来可见性问题 可见性：一个线程对共享变量的修改，另外一个线程能够立即看到  操作系统增加进程线程，分时复用CPU，均衡与IO设备的速度差异。 线程切换带来原子性问题 原子性：一个或多个操作在CPU执行过程中不被中断的特性  例如：count += 1； 32位">
@@ -414,7 +414,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-06-09 02:13:54" itemprop="dateModified" datetime="2019-06-09T02:13:54+08:00">2019-06-09</time>
+                <time title="修改时间：2019-06-09 02:16:18" itemprop="dateModified" datetime="2019-06-09T02:16:18+08:00">2019-06-09</time>
               
             
           </span>
@@ -523,7 +523,7 @@
 <hr>
 <h2 id="管程"><a href="#管程" class="headerlink" title="管程"></a>管程</h2><p>&emsp;管程：管理共享变量以及对共享变量的操作过程，让其支持并发</p>
 <h3 id="管程对互斥的处理方式"><a href="#管程对互斥的处理方式" class="headerlink" title="管程对互斥的处理方式"></a>管程对互斥的处理方式</h3><p>&emsp;将共享变量及其操作封装起来(类似Java)，同一时间只允许一个线程进入管程执行  </p>
-<h3 id="管程对同步的处理方式"><a href="#管程对同步的处理方式" class="headerlink" title="管程对同步的处理方式"></a>管程对同步的处理方式</h3><p><strong>同步意味着有条件控制</strong><br><img src="https://github.com/jjz921024/jjz921024.github.io/tree/master/images/concurrent/guancheng.png" alt="MESA管程模型"><br>Hasen/Hoare/MESA三种管程模型的核心区别: 当条件满足后，通知线程的方式不同 (假如当线程T2使线程T1等待的条件满足，线程T1和T2如何执行)  </p>
+<h3 id="管程对同步的处理方式"><a href="#管程对同步的处理方式" class="headerlink" title="管程对同步的处理方式"></a>管程对同步的处理方式</h3><p><strong>同步意味着有条件控制</strong><br><img src="https://github.com/jjz921024/jjz921024.github.io/raw/master/images/concurrent/guancheng.png" alt="MESA管程模型"><br>Hasen/Hoare/MESA三种管程模型的核心区别: 当条件满足后，通知线程的方式不同 (假如当线程T2使线程T1等待的条件满足，线程T1和T2如何执行)  </p>
 <ul>
 <li>Hasen: 要求notify方法放在最后。T2通知完T1后，T2结束，T1执行</li>
 <li>Hoare：T2通知完T1后，T2阻塞，T1立马执行，T1执行完再唤醒T2  <ul>
