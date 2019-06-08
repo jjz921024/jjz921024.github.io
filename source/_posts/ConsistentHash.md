@@ -54,8 +54,8 @@ tags:
 
 
 
-  [1]: http://p5aycqumd.bkt.clouddn.com/consistenthash/41061491.jpg
+  [1]: https://github.com/jjz921024/jjz921024.github.io/raw/master/images/consistenthash/hashduiyingguanxi.png 
   [2]: https://mp.weixin.qq.com/s/yimfkNYF_tIJJqUIzV7TFA
-  [3]: http://p5aycqumd.bkt.clouddn.com/consistenthash/81362192.jpg
-  [4]: http://p5aycqumd.bkt.clouddn.com/consistenthash/67570475.jpg
-  [5]: http://p5aycqumd.bkt.clouddn.com/consistenthash/13652786.jpg
+  [3]: https://github.com/jjz921024/jjz921024.github.io/raw/master/images/consistenthash/hashinsert.png
+  [4]: https://github.com/jjz921024/jjz921024.github.io/raw/master/images/consistenthash/hashdelete.png
+  [5]: https://github.com/jjz921024/jjz921024.github.io/raw/master/images/consistenthash/hashvitural.png
