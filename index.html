@@ -72,7 +72,7 @@
     root: '/',
     scheme: 'Muse',
     version: '7.1.2',
-    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    sidebar: {"position":"left","display":"hide","offset":12,"onmobile":false,"dimmer":false},
     back2top: true,
     back2top_sidebar: false,
     fancybox: false,
@@ -177,7 +177,13 @@
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-wrapper">
-  <div class="site-meta">
+  <div class="site-meta custom-logo">
+    
+      <div class="site-meta-headline">
+        <a>
+          <img class="custom-logo-image" src="/images/photo.jpg" alt="House Bunker">
+        </a>
+      </div>
     
 
     <div class="custom-logo-site-title">
@@ -344,12 +350,900 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/20/KafkaSASL/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JJz">
+      <meta itemprop="description" content="A place where JJz wirting">
+      <meta itemprop="image" content="/images/photo3.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="House Bunker">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/05/20/KafkaSASL/" class="post-title-link" itemprop="url">Kafka安全认证</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-05-20 10:35:45" itemprop="dateCreated datePublished" datetime="2019-05-20T10:35:45+08:00">2019-05-20</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-06-09 02:02:25" itemprop="dateModified" datetime="2019-06-09T02:02:25+08:00">2019-06-09</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="Kafka安全认证整理"><a href="#Kafka安全认证整理" class="headerlink" title="Kafka安全认证整理"></a>Kafka安全认证整理</h1><h2 id="Jaas文件说明"><a href="#Jaas文件说明" class="headerlink" title="Jaas文件说明"></a>Jaas文件说明</h2><figure class="highlight axapta"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// sasl  </span></span><br><span class="line">KafkaClient &#123;  <span class="comment">// 客户端需要的jaas   </span></span><br><span class="line">  org.apache.kafka.<span class="keyword">common</span>.security.plain.PlainLoginModule required</span><br><span class="line">  username=<span class="string">"yourname"</span>  <span class="comment">// 客户端登录的用户名和密码，该用户名和密码要在服务配置过</span></span><br><span class="line">  password=<span class="string">"yourpw"</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">KafkaServer &#123; <span class="comment">// 服务端需要的jaas</span></span><br><span class="line">  org.apache.kafka.<span class="keyword">common</span>.security.plain.PlainLoginModule required</span><br><span class="line">  username=<span class="string">"admin"</span>  <span class="comment">// 服务端也需要一个账户进行登录</span></span><br><span class="line">  password=<span class="string">"admin"</span></span><br><span class="line">  user_admin=<span class="string">"admin"</span>  <span class="comment">// 配置admin账户</span></span><br><span class="line">  user_myuser=<span class="string">"mypw"</span>; <span class="comment">// 格式 user_&lt;username&gt;="&lt;password&gt;"</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight d"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// kerberos</span></span><br><span class="line">KafkaClient &#123;   <span class="comment">// 还有配置Client连接zk</span></span><br><span class="line">  com.sun.security.auth.<span class="keyword">module</span>.Krb5LoginModule required       </span><br><span class="line">  useKeyTab=<span class="literal">true</span></span><br><span class="line">  keyTab=<span class="string">"src/main/resources/user.keytab"</span>        <span class="comment">// 设置keytab所在的相对路径 </span></span><br><span class="line">  principal=<span class="string">"CORPLK50OPENAPI@HADOOP.COM"</span></span><br><span class="line">  useTicketCache=<span class="literal">false</span>                           <span class="comment">// 若为true时，可先用kinit命令获取凭证</span></span><br><span class="line">  storeKey=<span class="literal">true</span></span><br><span class="line">  <span class="keyword">debug</span>=<span class="literal">true</span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p><strong>最后一行和倒数第二行要以分号结尾</strong></p>
+<hr>
+<h2 id="运行配置"><a href="#运行配置" class="headerlink" title="运行配置"></a>运行配置</h2><ol>
+<li><p>以程序方式运行  </p>
+<p> 程序运行时要将krb5和jaas文件的路径设置在系统的环境变量里</p>
+ <figure class="highlight gams"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">System</span>.setProperty(<span class="string">"java.security.auth.login.config"</span>, <span class="string">"src/main/resources/jaas.conf"</span>);</span><br><span class="line"><span class="keyword">System</span>.setProperty(<span class="string">"java.security.krb5.conf"</span>, <span class="string">"src/main/resources/krb5.conf"</span>);</span><br></pre></td></tr></table></figure>
+<p> 或者</p>
+ <figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">props.put(<span class="string">"sasl.jaas.config"</span>, PlainLoginModule.class.getName() + <span class="string">" required username=<span class="subst">\"</span>"</span> + username + <span class="string">"<span class="subst">\"</span> password=<span class="subst">\"</span>"</span> + password + <span class="string">"<span class="subst">\"</span>;"</span>);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>以脚本方式运行</p>
+ <figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-Djava<span class="selector-class">.security</span><span class="selector-class">.krb5</span><span class="selector-class">.conf</span>=./krb5<span class="selector-class">.conf</span> -Djava<span class="selector-class">.security</span><span class="selector-class">.auth</span><span class="selector-class">.login</span><span class="selector-class">.config</span>=./jaas.conf</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p><em>sasl认证时不用配krb5</em><br><em>kinit -kt ./user.keytab <a href="mailto:MYPRINCIPAL@HADOOP.COM" target="_blank" rel="noopener">MYPRINCIPAL@HADOOP.COM</a></em></p>
+<hr>
+<h2 id="SASL-ACL"><a href="#SASL-ACL" class="headerlink" title="SASL + ACL"></a>SASL + ACL</h2><p>properties文件中配置<br><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">security.<span class="attribute">protocol</span>=SASL_PLAINTEXT</span><br><span class="line">sasl.<span class="attribute">mechanism</span>=PLAIN</span><br></pre></td></tr></table></figure></p>
+<p>使用kafka-acls.sh脚本对用户权限进行授权</p>
+<h2 id="Kerberos"><a href="#Kerberos" class="headerlink" title="Kerberos"></a>Kerberos</h2><p>properties文件中配置<br><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">security.<span class="attribute">protocol</span>=SASL_PLAINTEXT</span><br><span class="line">sasl.<span class="attribute">mechanism</span>=GSSAPI</span><br><span class="line">sasl.kerberos.service.<span class="attribute">name</span>=kafka</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/15/JavaConcurrent/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JJz">
+      <meta itemprop="description" content="A place where JJz wirting">
+      <meta itemprop="image" content="/images/photo3.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="House Bunker">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/05/15/JavaConcurrent/" class="post-title-link" itemprop="url">Java并发编程——理论基础</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-05-15 21:15:50" itemprop="dateCreated datePublished" datetime="2019-05-15T21:15:50+08:00">2019-05-15</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-06-09 02:13:54" itemprop="dateModified" datetime="2019-06-09T02:13:54+08:00">2019-06-09</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="Java并发编程学习笔记——理论基础"><a href="#Java并发编程学习笔记——理论基础" class="headerlink" title="Java并发编程学习笔记——理论基础"></a>Java并发编程学习笔记——理论基础</h1><h2 id="并发的三个核心问题"><a href="#并发的三个核心问题" class="headerlink" title="并发的三个核心问题"></a>并发的三个核心问题</h2><ul>
+<li>分工</li>
+<li>同步</li>
+<li>互斥<br><img src="https://github.com/jjz921024/jjz921024.github.io/raw/master/images/concurrent/javaconcurrent.png" alt="并发编程核心问题"></li>
+</ul>
+<p>微观层面  </p>
+<ol>
+<li><p>CPU增加缓存，以均衡与内存的速度差异。<br> 缓存带来可见性问题<br> 可见性：一个线程对共享变量的修改，另外一个线程能够立即看到</p>
+</li>
+<li><p>操作系统增加进程线程，分时复用CPU，均衡与IO设备的速度差异。<br> 线程切换带来原子性问题<br> 原子性：一个或多个操作在CPU执行过程中不被中断的特性</p>
+<blockquote>
+<p>例如：count += 1； 32位机器对long型变量 都不是原子性操作</p>
+</blockquote>
+</li>
+<li><p>编译器优化指令执行次序，使缓存更加合理地利用。<br> 编译优化带来有序性问题</p>
+<blockquote>
+<p>例如： 双重检查创建单例对象  </p>
+</blockquote>
+</li>
+</ol>
+<p>宏观层面  </p>
+<ol>
+<li><p>安全性  =&gt; 互斥、锁<br> 数据竞争：多个线程访问未加锁的共享资源<br> 竟态条件：程序的执行结果依赖线程的执行顺序  </p>
+</li>
+<li><p>活跃性 =&gt; 资源公平分配，公平锁，等待队列<br> 死锁，活锁，饥饿</p>
+</li>
+<li><p>性能问题<br> 使用无锁的数据结构和算法，减少持有锁的时间</p>
+<blockquote>
+<p>指标<br> 吞吐量：指<strong>单位时间</strong>内能处理的请求数量<br> 延时：指发出请求到收到响应的时间<br> 并发量：指<strong>同时</strong>能处理的请求数量</p>
+</blockquote>
+</li>
+</ol>
+<hr>
+<h2 id="Java内存模型对可见性和有序性的处理"><a href="#Java内存模型对可见性和有序性的处理" class="headerlink" title="Java内存模型对可见性和有序性的处理"></a>Java内存模型对可见性和有序性的处理</h2><h3 id="Happens-Before规则"><a href="#Happens-Before规则" class="headerlink" title="Happens-Before规则"></a>Happens-Before规则</h3><ol>
+<li><p>程序次序规则<br> 在一个线程中，按照程序的顺序，前面的操作happens-before于后续的操作</p>
+</li>
+<li><p>volatile变量规则<br> 对volatile变量的写操作happens-before于后续对该变量的读操作 (一个线程写volatile变量后，其他线程总是可见的)  </p>
+</li>
+<li><p>管程锁定规则<br> 对一个锁的解锁操作happens-before于后续对这个锁的加锁操作 (一个线程在锁中的操作，解锁后其他线程都是可见的)  </p>
+</li>
+<li><p>线程启动规则<br> 线程A调用线程B的start方法时，线程B能够看到线程A在启动线程B前的操作  </p>
+</li>
+<li><p>线程终止规则<br> 线程A得到线程B完成(调用线程B的join方法)，当线程B完成返回后，线程A能够看到线程B的操作(对于共享变量而言)</p>
+<p> <strong>Happens-Before是有传递性的</strong></p>
+<p> 实现方式： 内存屏障(Memory Barrier)；对编译器而言，内存屏障会限制指令重排序；对处理器而言，内存屏障会使缓存刷新</p>
+</li>
+</ol>
+<hr>
+<h2 id="锁对原子性问题的处理"><a href="#锁对原子性问题的处理" class="headerlink" title="锁对原子性问题的处理"></a>锁对原子性问题的处理</h2><p><strong>加锁的本质是在锁对象的对象头中写入当前线程id</strong>  </p>
+<p><strong>原子性的本质：多个资源间有一致性要求，操作的中间状态对外不可见</strong></p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title">SafeCals</span> &#123;</span><br><span class="line">    <span class="keyword">long</span> <span class="keyword">value</span> = <span class="number">0</span>L;</span><br><span class="line">    <span class="function"><span class="keyword">long</span> <span class="title">get</span>(<span class="params"></span>) </span>&#123;  <span class="comment">// 但get方法的可见性没保证到</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">value</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function">synchronized <span class="keyword">void</span> <span class="title">addOne</span>(<span class="params"></span>) </span>&#123; <span class="comment">//多线程执行addOne方法能保证可见性</span></span><br><span class="line">        <span class="keyword">value</span> += <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>解决方法：get方法加锁synchronized，或value变量加volatile关键字</p>
+<figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 加的是SafeCals.class的锁，加不同的锁也无法保证可见性</span></span><br><span class="line"><span class="keyword">synchronized</span> <span class="keyword">static</span> <span class="function"><span class="keyword">long</span> <span class="title">get</span><span class="params">()</span> </span>&#123; </span><br><span class="line">    <span class="keyword">return</span> value;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// JVM逃逸分析后，sync代码会被优化掉</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">addOne</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">synchronized</span>(<span class="keyword">new</span> Object()) &#123;</span><br><span class="line">        value += <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="锁和受保护资源的关系"><a href="#锁和受保护资源的关系" class="headerlink" title="锁和受保护资源的关系"></a>锁和受保护资源的关系</h3><p><strong>受保护资源和锁的关系应该是N：1 (不能多把锁保护一个资源)</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Account</span> &#123;</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> balance;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 有并发问题，this对象只能保护自己的balance字段</span></span><br><span class="line">    <span class="comment">// 保护不了target对象的balance字段</span></span><br><span class="line">    <span class="function">synchronzied <span class="keyword">void</span> <span class="title">transfer</span><span class="params">(Account target, <span class="keyword">int</span> amt)</span> </span>&#123;</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>解决方法：创建Acount是传入<strong>同一个</strong>Object对象作为锁, 或者使用Account.class作为锁(但有性能问题，所有账户的转账transfer操作都会变成串行的)  </p>
+<blockquote>
+<p>不能用this.balance这类可变对象作为锁，例如Integer，String，Boolean</p>
+</blockquote>
+<h3 id="死锁的处理方式"><a href="#死锁的处理方式" class="headerlink" title="死锁的处理方式"></a>死锁的处理方式</h3><figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">transfer</span><span class="params">(Account <span class="keyword">target</span>, <span class="keyword">int</span> amt)</span> </span>&#123;</span><br><span class="line">    synchronzied(<span class="keyword">this</span>) &#123;</span><br><span class="line">        synchronzied(targer) &#123;   </span><br><span class="line">            <span class="comment">// 锁的粒度细，但先后加锁不同的对象，有可能产生死锁</span></span><br><span class="line">            ...</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当以下四个条件同时满足时，才会发生死锁  </p>
+<ul>
+<li>互斥： 共享资源X和Y只能被一个线程占有  (目的)</li>
+<li>占有且等待： 线程占有X在等待Y时，不会释放X</li>
+<li>不可抢占： 其他线程不能抢占线程占有的资源</li>
+<li>循环等待： 两个线程相互等待对方占有的资源</li>
+</ul>
+<h4 id="破坏占有且等待条件"><a href="#破坏占有且等待条件" class="headerlink" title="破坏占有且等待条件"></a>破坏占有且等待条件</h4><p>一次申请所有资源<br><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 创建一个单例的类，负责一次申请所有资源</span></span><br><span class="line"><span class="keyword">class</span> <span class="title">Allocator</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> List&lt;Object&gt; als = <span class="keyword">new</span> ArrayList&lt;&gt;(); <span class="comment">// 存放表示已申请到的资源</span></span><br><span class="line">    <span class="function">synchronzied boolean <span class="title">apply</span>(<span class="params">Object <span class="keyword">from</span>, Object to</span>) </span>&#123;</span><br><span class="line">        <span class="comment">// list中有对象，表明锁已经被其他线程申请了</span></span><br><span class="line">        <span class="keyword">if</span> (als.contain(<span class="keyword">from</span>) || als.contain(to)) </span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">else</span> &#123;</span><br><span class="line">            als.<span class="keyword">add</span>(<span class="keyword">from</span>);</span><br><span class="line">            als.<span class="keyword">add</span>(to);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h4 id="破坏不可抢占条件"><a href="#破坏不可抢占条件" class="headerlink" title="破坏不可抢占条件"></a>破坏不可抢占条件</h4><p>&emsp;要求获取资源的线程能主动解锁 (synchronzied原语做不到主动释放资源)</p>
+<h4 id="破坏循环等待条件"><a href="#破坏循环等待条件" class="headerlink" title="破坏循环等待条件"></a>破坏循环等待条件</h4><p>&emsp;对资源进行排序，申请资源时按顺序申请  (相对来说成本小)</p>
+<h3 id="等待-通知机制"><a href="#等待-通知机制" class="headerlink" title="等待-通知机制"></a>等待-通知机制</h3><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span>(!allocator.apply(<span class="keyword">from</span>, to));   <span class="comment">// 不停的请求锁</span></span><br><span class="line">---</span><br><span class="line">    <span class="comment">// 改进后</span></span><br><span class="line">    <span class="function">synchronzied <span class="keyword">void</span> <span class="title">apply</span>(<span class="params">Object <span class="keyword">from</span>, Object to</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">while</span> (als.contain(<span class="keyword">from</span>) || als.contain(to)) </span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                wait();</span><br><span class="line">            &#125; <span class="keyword">catch</span>(Exception e) &#123;</span><br><span class="line">            &#125;</span><br><span class="line">        als.<span class="keyword">add</span>(<span class="keyword">from</span>);</span><br><span class="line">        als.<span class="keyword">add</span>(to);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 释放资源</span></span><br><span class="line">    <span class="function">synchronzied <span class="keyword">void</span> <span class="title">free</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        als.<span class="keyword">remove</span>(<span class="keyword">from</span>);</span><br><span class="line">        als.<span class="keyword">remove</span>(to);</span><br><span class="line">        notifyAll();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="管程"><a href="#管程" class="headerlink" title="管程"></a>管程</h2><p>&emsp;管程：管理共享变量以及对共享变量的操作过程，让其支持并发</p>
+<h3 id="管程对互斥的处理方式"><a href="#管程对互斥的处理方式" class="headerlink" title="管程对互斥的处理方式"></a>管程对互斥的处理方式</h3><p>&emsp;将共享变量及其操作封装起来(类似Java)，同一时间只允许一个线程进入管程执行  </p>
+<h3 id="管程对同步的处理方式"><a href="#管程对同步的处理方式" class="headerlink" title="管程对同步的处理方式"></a>管程对同步的处理方式</h3><p><strong>同步意味着有条件控制</strong><br><img src="https://github.com/jjz921024/jjz921024.github.io/tree/master/images/concurrent/guancheng.png" alt="MESA管程模型"><br>Hasen/Hoare/MESA三种管程模型的核心区别: 当条件满足后，通知线程的方式不同 (假如当线程T2使线程T1等待的条件满足，线程T1和T2如何执行)  </p>
+<ul>
+<li>Hasen: 要求notify方法放在最后。T2通知完T1后，T2结束，T1执行</li>
+<li>Hoare：T2通知完T1后，T2阻塞，T1立马执行，T1执行完再唤醒T2  <ul>
+<li>多了阻塞操作，本质是中断当前线程</li>
+</ul>
+</li>
+<li><p>MESA：T2通知完T1后，T2接着执行，T1从条件变量等待队列进入到入口等待队列</p>
+<ul>
+<li>好处是notify不用放在最后，也无阻塞操作</li>
+<li><p>副作用是当T1执行时，条件有可能变化，因此需要轮询执行条件</p>
+<figure class="highlight gcode"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// MESA管程模型的编程范式</span></span><br><span class="line"><span class="keyword">while</span><span class="comment">(条件不满足)</span> &#123;</span><br><span class="line">    wait<span class="comment">()</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<p>Java内置的管程synchronized对MESA模型进行了精简，只有一个条件变量。  </p>
+<p>wati()方法只有MESA模型有超时时间的参数。因为notify后，是将等待的线程放入入口等待队列，不一定有机会执行，所以要设超时时间。Hasen/Hoare模型都是notify后，等待的线程肯定能执行到。</p>
+<hr>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">Thread th = Thread.currentThread();</span><br><span class="line"><span class="keyword">while</span>(<span class="literal">true</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (th.isInterrupted()) &#123;</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    ...</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        Thread.sleep(<span class="number">100</span>);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 当线程被中断后，不能退出while循环</span></span><br><span class="line"><span class="comment">// 因为抛出异常后会清理中断标志，因此执行不到break语句 (线程大部分时间在执行sleep)</span></span><br></pre></td></tr></table></figure>
+<p>修改方式：  </p>
+<ol>
+<li>在catch中重置中断标志， Thread.currentThread().interrupt();  </li>
+<li>try包在while循环外</li>
+<li>在catch中break;</li>
+</ol>
+<hr>
+<h3 id="逸出"><a href="#逸出" class="headerlink" title="逸出"></a>逸出</h3><ol>
+<li>静态方式若操作了静态变量就会有线程安全问题</li>
+<li>尽管方法内部考虑了线程安全，但方法的参数是引用类型时，也会产生线程安全问题 </li>
+</ol>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/10/HBase-PE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JJz">
+      <meta itemprop="description" content="A place where JJz wirting">
+      <meta itemprop="image" content="/images/photo3.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="House Bunker">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2018/11/10/HBase-PE/" class="post-title-link" itemprop="url">Hbase性能压测工具</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-11-10 12:40:25" itemprop="dateCreated datePublished" datetime="2018-11-10T12:40:25+08:00">2018-11-10</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-06-09 02:02:25" itemprop="dateModified" datetime="2019-06-09T02:02:25+08:00">2019-06-09</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="PerformanceEvaluation源码阅读"><a href="#PerformanceEvaluation源码阅读" class="headerlink" title="PerformanceEvaluation源码阅读"></a>PerformanceEvaluation源码阅读</h1><p>近日在工作需要对集群的hbase做些简单的测试，所以接触了PerformanceEvaluation这个类，作为HBase自带的性能测试工具，其主要就是模拟多用户同时访问集群进行压测。</p>
+<h2 id="用法-amp-主要参数"><a href="#用法-amp-主要参数" class="headerlink" title="用法 &amp; 主要参数"></a>用法 &amp; 主要参数</h2><figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bin/hbase <span class="keyword">pe</span> <span class="symbol">&lt;options&gt;</span> <span class="symbol">&lt;command&gt;</span> <span class="symbol">&lt;nclients&gt;</span></span><br></pre></td></tr></table></figure>
+<p>倒数第二个参数command为hbase提供的几种测试用例，最后一个参数为线程数</p>
+<p>测试用例常用的有：</p>
+<ul>
+<li>sequentialRead ———— 顺序读测试</li>
+<li>sequentialWrite ———— 顺序写测试</li>
+<li>randomRead ———— 随机读测试</li>
+<li>randomWrite ———— 随机写测试</li>
+<li>scan ———— 扫描 (读每一行)</li>
+<li>scanRange10/100/1000 ———— 指定范围内随机扫描，返回10/100/1000个数据</li>
+</ul>
+<p>主要参数有：</p>
+<ul>
+<li>nomapred —— 使用MapReduce的方式启动多线程测试还是启动本地多线程的方式，通常使用本地多线程方式。如果没有安装MapReduce加上此参数表示不是mr</li>
+<li>rows —— 指定<strong>每个线程</strong>处理的数据行数，总共测试行数等于线程数*rows</li>
+<li>size —— 总测试的数据大小，单位为GB。 这个参数与rows<strong>互斥</strong>，不要两个参数一起设。在使用RandomRead和RandomSeekScan测试时，这个size可以用来指定读取的数据范围。这个值在Read时非常重要，如果设的不好，会产生很多返回值为空的读，影响测试结果 </li>
+<li>valueSize —— 写入HBase的value的size，单位是Byte，默认1024字节</li>
+<li>oneCon —— 多线程运行测试时，所有线程使用一个连接还是每个线程一个连接。默认值为false，每个thread都会启一个Connection，建议把这个参数设为True <em>(涉及底层netty的线程模型，hbase2.0后可指定连接数)</em></li>
+<li>presplit ——  表的预分裂region个数</li>
+<li>inmemory —— 会将数据尽量放在内存中，默认是false，为了保证测试准确性，建议保持为false</li>
+<li>table —— 测试表的名字，默认为TestTable</li>
+<li>compress —— 指定压缩方式，默认是NONE</li>
+<li>filterAll —— 加上此参数，则server端scan出来的结果不再返回给client端，用于单纯测试server端的性能</li>
+<li>autoFlush —— 默认为false，即PE在写测试时用的是BufferedMutator，BufferedMutator会把数据攒在内存里，达到一定的大小再向服务器发送，如果想明确测单行Put的写入性能，建议设置为true。autoFlush为false会影响统计的准确性，因为在没有攒够足够的数据时，put操作会立马返回，根本没产生RPC，但是相应的时间和次数也会被统计在最终结果里 (源码中好像没有看到这个参数的作用？？)</li>
+</ul>
+<h2 id="源码解读"><a href="#源码解读" class="headerlink" title="源码解读"></a>源码解读</h2><ol>
+<li><p>继承了Configured类，表示已被配置了Configuration文件，在PE的构造函数中调用了super(conf)，将配置文件保存了起来</p>
+</li>
+<li><p>在run方法中，对参数进行处理。这种处理参数的方法以后可以借鉴。将所有参数以空格分割，转成linkedList，再在一个方法中解析该list，每次poll一个参数进行判断赋值给TestOptions类保存参数。<br>并且通过这种方法控制命令行格式，若判断到一个参数为测试用例的其中一种，则下一个参数必须为线程数，最后在判断list是否为空。</p>
+<blockquote>
+<p>从parseOpts方法中能看到，size参数和rows参数必须设置一个且只能设其一。如果指定size，这算出要测试的总行数再除以线程数，得到每个线程要操作的rowkey范围；若指定每个线程处理的行数，则同理求出size大小</p>
+</blockquote>
+</li>
+</ol>
+<blockquote>
+<p>TestOptions保存这全部的参数信息，并且提供了一个方法可以从一个TestOptions对象复制出另一个该对象的方法，供多线程测试时，每个线程维持一份不同的参数</p>
+</blockquote>
+<ol>
+<li><p>通过反射构造出测试用例的类类型Class，所有测试用例类都通过TableTest继承Test，所以是Test的子类</p>
+</li>
+<li><p>runTest方法中，搜先是调用了checkTable方法来判断<em>测试表是否需要重建</em>，主要判断逻辑：</p>
+<ul>
+<li>在只读测试中，必须指定一张存在的表</li>
+<li>如果测试表存在，但与指定的region数不同，则要重建</li>
+<li>如果是写测试，测试表的分区策略或副本数与指定参数不同，则也要重建<br>目的就是为了提供一个与指定参数完全符合的测试环境，主要就是region数，分区策略和副本数要一致，这样测试结果才准确。 最后根据nomapred决定是本地多线程测试还是启动mapreduce测试。</li>
+</ul>
+</li>
+<li><p>doLocalClients的主要逻辑是创建和线程数相同的Future对象用于取回测试结果，再创建一个线程池向提交n个线程。为每个线程复制一个TestOptions对象，以维持每个线程不同的参数，例如startRow。 再调用runOneClient方法</p>
+</li>
+<li><p>runOneClient是每个线程单独处理的方法，通过传入的参数反射构造出Test测试用例类，再调用Test的test方法(这里使用了模板方法的设计模式)。最后返回RunResult对象，保存着这个线程的一些性能指标，返回出去可用于统计平均值和方法等总体性能指标。</p>
+</li>
+</ol>
+<h2 id="注意的问题"><a href="#注意的问题" class="headerlink" title="注意的问题"></a>注意的问题</h2><ol>
+<li><p>在进行读测试之前要准备数据，建议使用SequentialWrite测试用例。</p>
+<blockquote>
+<p>在SequentialWrite中，PE会给每个线程设置偏移量，保证0 ~ 9999这10000个行（会把所有数字扩展成26位等长的byte数组）一行不差地写入HBase。如果是RandomWriteTest，在每个线程中会随机生成一个0 ~ 9999之前的数字写入（–row=1000代表每个线程会写1000次）。由于是随机，会造成中间有些行没有写入，那么在读取测试时，读到的就是空行，影响测试结果。</p>
+</blockquote>
+</li>
+<li><p>建议使用–size参数而不是–rows</p>
+<blockquote>
+<p>size参数指定后，具体执行多少行PE内部会自己去算。假设我这里填的是–row=1000，线程数是10，那么写入的数据范围是0~9999。当我在做RandomReadTest时，如果需要修改线程数，比如我想测20个线程并行读，那么数据读取的范围将是0 ~ (1000*(20-1))，很大一部分读是空读！你当然可以根据线程数来调整读测试时row变量的值，使读的整体范围不超过写入的数据范围，但是row的大小影响了整体测试的时间，而统一用size你就啥都不用管了。</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>在读测试时不要加关于表的任何参数，如presplit，如果加了PE会将表重建。valueSize和size的值要与准备数据时写测试用例的参数保持一致，PE靠这两个值来算数据的范围和行数。</p>
+</blockquote>
+</li>
+</ol>
+<h2 id="内部类解读"><a href="#内部类解读" class="headerlink" title="内部类解读"></a>内部类解读</h2><p>Test是抽象类，提供了很多hook，类似模板方法供子类实现<br>比如：TableTest实现了Test的onStartup和onTakedown方法，控制每个测试用例Table对象的创建(Table对象的创建比较消耗hbase资源)；所有测试用例类都实现了testRow类方法，实现各自测试方法对每行数据的处理。<strong>所以从Test类基本能看到整个测试的流程</strong></p>
+<p>整个test方法调用链有三条：</p>
+<ol>
+<li>test ——&gt;  testSetup:负责线程和连接的关系 ——&gt;  onStartup: 通过线程各自的连接得到table对象，由TableTest或BufferedMutatorTest实现</li>
+<li>testTimed: 得到起止的rowkey  ——&gt;  testRow：由每个测试用例类实现各自逻辑</li>
+<li>testTakedonw  ——&gt;  打印性能指标，onTakedown：关闭table对象</li>
+</ol>
+<p>其中RandomWriteTest和SequentialWriteTest这两个写测试用例继承BufferedMutatorTest,内部是一个BufferedMutator，用于异步批量写数据，实现大致和TableTest一样，只是把Tabel接口换成了BufferedMutator接口</p>
+<p>Imcrement、Append和CheckAnd开头的测试类，有类似CAS操作，则继承了CASTest这个基类</p>
+<p>##参考资料</p>
+<ul>
+<li><a href="https://yq.aliyun.com/articles/594384" target="_blank" rel="noopener">HBase2.0中的Benchmark工具 — PerformanceEvaluation</a></li>
+<li><a href="https://blog.csdn.net/bryce123phy/article/details/77905538" target="_blank" rel="noopener">HBase PerformanceEvaluation机制分析</a></li>
+</ul>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/12/SingletonPattern/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JJz">
+      <meta itemprop="description" content="A place where JJz wirting">
+      <meta itemprop="image" content="/images/photo3.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="House Bunker">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2018/07/12/SingletonPattern/" class="post-title-link" itemprop="url">单例模式整理</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-07-12 12:31:45" itemprop="dateCreated datePublished" datetime="2018-07-12T12:31:45+08:00">2018-07-12</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-06-09 02:02:25" itemprop="dateModified" datetime="2019-06-09T02:02:25+08:00">2019-06-09</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="单例模式"><a href="#单例模式" class="headerlink" title="单例模式"></a>单例模式</h1><p><strong>单例模式</strong> </p>
+<p>保证一个类在内存中只有一个实例，并提供一个全局访问点</p>
+<ul>
+<li>饿汉式</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Singleton</span>&#123;</span></span><br><span class="line">   <span class="comment">/**</span></span><br><span class="line"><span class="comment">     在类内创建对象  </span></span><br><span class="line"><span class="comment">     静态，保证内存中只有一个</span></span><br><span class="line"><span class="comment">     私有，进行封装通过方法调用</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">   <span class="keyword">private</span> <span class="keyword">static</span> Singleton s = <span class="keyword">new</span> Singleton();  </span><br><span class="line">                                            </span><br><span class="line">   <span class="function"><span class="keyword">private</span> <span class="title">Singleton</span><span class="params">()</span></span>&#123;&#125;                       <span class="comment">//私有化构造函数，对外不能创建对象</span></span><br><span class="line"></span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title">getInstance</span><span class="params">()</span></span>&#123;      <span class="comment">//公共静态方法，用类名调用</span></span><br><span class="line">        <span class="keyword">return</span> s;                              <span class="comment">//Singleton s1 = Singleton.getInstance();</span></span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>懒汉式<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title">Singleton</span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Singleton s;   <span class="comment">//懒汉模式，声明时未实例化</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Singleton</span>(<span class="params"></span>)</span>&#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title">getInstance</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(s == <span class="literal">null</span>)           <span class="comment">//存在线程安全问题</span></span><br><span class="line">            s = <span class="keyword">new</span> Singleton();</span><br><span class="line">        <span class="keyword">return</span> s;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>未实例化时，可能存在多个线程都通过判空s==null的情况，因此存在线程安全问题。</p>
+<ul>
+<li>双重检查加锁<br>改进懒汉式线程安全问题，在创建对象前加同步锁Synchronized</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Singleton</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">volatile</span> <span class="keyword">static</span> Single s = <span class="keyword">null</span>; </span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Singleton</span><span class="params">()</span></span>&#123;&#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Single <span class="title">getInstance</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(s==<span class="keyword">null</span>)&#123;                  </span><br><span class="line">            <span class="keyword">synchronized</span> (Single.class) &#123;</span><br><span class="line">                <span class="keyword">if</span>(s==<span class="keyword">null</span>)&#123;      </span><br><span class="line">                     s = <span class="keyword">new</span> Single();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> s;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li><p>第一次判空防止实例化后，每次调用getInstance方法都会同步，提高性能</p>
+</li>
+<li><p>第二次判空防止未实例化时，多个线程通过第一次判断，进入等待。其中一个线程创建了对象后，另一个线程也能再一次创建对象，无法保证单例</p>
+</li>
+<li><p>volatile关键字防止因为JVM的指令重排而产生线程安全问题，保证指令执行的顺序</p>
+<blockquote>
+<p>如：instance = new Singleton，会被编译器编译成如下JVM指令：</p>
+<p>memory = allocate();    //1：分配对象的内存空间<br>ctorInstance(memory);   //2：初始化对象<br>instance = memory;      //3：设置instance指向刚分配的内存地址</p>
+<p>但是这些指令顺序并非一成不变，有可能会经过JVM和CPU的优化，指令重排成下面的顺序：<br>memory = allocate();    //1：分配对象的内存空间<br>instance = memory;      //3：设置instance指向刚分配的内存地址<br>ctorInstance(memory);   //2：初始化对象</p>
+<p>当线程A执行完1,3时，instance对象还未完成初始化，但已经不再指向null。此时如果线程B抢占到CPU资源，执<br>行if（instance == null）的结果会是false，从而返回一个没有初始化完成的instance对象。</p>
+</blockquote>
+<blockquote>
+<p>加入volatile关键字时，生成的汇编代码会多出一个lock前缀指令，lock前缀指令实际上相当于一个内存屏障(也叫内存栅栏)，内存屏障会提供3个功能:<br>1.它确保指令重排序时不会把其后面的指令排到内存屏障之前的位置，也不会把前面的指令排到内存屏障的后面，即在执行到内存屏障这句指令时，在它前面的操作已经全部完成；<br>2.它会强制将对缓存的修改操作立即写入主存；<br>3.如果是写操作，它会导致其他CPU中对应的缓存行无效<br><strong>volatile不保证原子性，保证可见性和部分有序性</strong></p>
+</blockquote>
+</li>
+</ol>
+<ul>
+<li>静态内部类<figure class="highlight smali"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">public class Singleton &#123;</span><br><span class="line">   <span class="keyword"> private</span> Singleton() &#123;&#125;</span><br><span class="line"></span><br><span class="line">   <span class="keyword"> public</span><span class="keyword"> static</span> Singleton getInstance()&#123;</span><br><span class="line">       <span class="built_in"> return </span>SingletonHolder.instance;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">   <span class="keyword"> private</span><span class="keyword"> static</span> class SingletonHolder&#123;</span><br><span class="line">       <span class="keyword"> private</span><span class="keyword"> static</span> Singleton<span class="built_in"> instance </span>=<span class="built_in"> new </span>Singleton();</span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<ol>
+<li><p>instance对象是通过在调用getInstance方法时才实例化对象，通过ClassLoader的加载机制实现懒加载(加载外部类时，并不加载内部类)</p>
+</li>
+<li><p>线程安全，但能利用反射破坏单例</p>
+</li>
+</ol>
+<figure class="highlight delphi"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//获得构造器</span></span><br><span class="line"><span class="function"><span class="keyword">Constructor</span> <span class="title">con</span> = <span class="title">Singleton</span>.<span class="title">class</span>.<span class="title">getDeclaredConstructor</span><span class="params">()</span>;</span></span><br><span class="line"><span class="comment">//设置为可访问</span></span><br><span class="line">con.setAccessible(true);</span><br><span class="line"><span class="comment">//构造两个不同的对象</span></span><br><span class="line">Singleton singleton1 = (Singleton)con.newInstance();</span><br><span class="line">Singleton singleton2 = (Singleton)con.newInstance();</span><br><span class="line"><span class="comment">//验证是否是不同对象</span></span><br><span class="line">System.<span class="keyword">out</span>.println(singleton1.equals(singleton2));</span><br></pre></td></tr></table></figure>
+<ul>
+<li>单元素枚举<figure class="highlight smali"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">public enum ResourceEnum &#123;</span><br><span class="line">    INSTANCE;</span><br><span class="line">    </span><br><span class="line">   <span class="keyword"> private</span> Resource instance;</span><br><span class="line">    </span><br><span class="line">    ResourceEnum() &#123;</span><br><span class="line">       <span class="built_in"> instance </span>=<span class="built_in"> new </span>Resource();</span><br><span class="line">    &#125;</span><br><span class="line">   <span class="keyword"> public</span> Resource getInstance() &#123;</span><br><span class="line">       <span class="built_in"> return </span>instance;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 需要单例的资源</span><br><span class="line">class Resource&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>调用方法：ResourceEnum.INSTANCE.getInstance()</p>
+<ol>
+<li><p>枚举类的构造方法限制为私有，在访问枚举实例时会执行构造方法</p>
+</li>
+<li><p>每个枚举实例都是static final类型，只能被实例化一次</p>
+</li>
+<li><p>单例对象在枚举类加载时进行初始化，并非懒加载</p>
+</li>
+<li><p>能防止反射破坏单例</p>
+</li>
+<li><p>保证反序列化结果为同一对象</p>
+<blockquote>
+<p>JVM在序列化时，只是将枚举对象的name属性输出到结果中，反序列化时通过java.lang.Enum的valueOf()方法根据名字查找枚举对象。因此反序列化后的对象和序列化前的对象实例相同。<br>其他单例模型要做到这点，必须实现readResolve()方法</p>
+</blockquote>
+</li>
+</ol>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/16/ConsistentHash/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="JJz">
       <meta itemprop="description" content="A place where JJz wirting">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/images/photo3.png">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -406,7 +1300,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-06-08 22:07:08" itemprop="dateModified" datetime="2019-06-08T22:07:08+08:00">2019-06-08</time>
+                <time title="修改时间：2019-06-09 01:42:18" itemprop="dateModified" datetime="2019-06-09T01:42:18+08:00">2019-06-09</time>
               
             
           </span>
@@ -448,13 +1342,13 @@
 <h2 id="算法思想"><a href="#算法思想" class="headerlink" title="算法思想"></a>算法思想</h2><ol>
 <li><p>把全量的缓存空间当作一个环形存储结构，环形空间总共分成2^32个区域。每个数据的id都可以通过hash函数转换成一个0~(2^32)-1的数字，并对应到环形空间的一个区域。每台机器也遵循相同hash算法，根据机器IP或域名映射到环形空间。</p>
 </li>
-<li><p>离每一个数据的哈希值key的顺时针方向最近的节点，负责存储该key的数据。实现将数据和节点对应起来。<br><img src="http://p5aycqumd.bkt.clouddn.com/consistenthash/41061491.jpg" alt="数据与节点对应关系">(本文章多次引用了<a href="https://mp.weixin.qq.com/s/yimfkNYF_tIJJqUIzV7TFA" target="_blank" rel="noopener">程序员小灰</a>中的图片，侵删)</p>
+<li><p>离每一个数据的哈希值key的顺时针方向最近的节点，负责存储该key的数据。实现将数据和节点对应起来。<br><img src="https://github.com/jjz921024/jjz921024.github.io/raw/master/images/consistenthash/hashduiyingguanxi.png" alt="数据与节点对应关系">(本文章多次引用了<a href="https://mp.weixin.qq.com/s/yimfkNYF_tIJJqUIzV7TFA" target="_blank" rel="noopener">程序员小灰</a>中的图片，侵删)</p>
 </li>
-<li><p>节点变化<br>当集群节点变化时，只会引起一小部分的数据迁移。<br>新增节点时的变化情况：<br><img src="http://p5aycqumd.bkt.clouddn.com/consistenthash/81362192.jpg" alt="新增节点"><br>移除节点时的变化情况：<br><img src="http://p5aycqumd.bkt.clouddn.com/consistenthash/67570475.jpg" alt="移除节点"></p>
+<li><p>节点变化<br>当集群节点变化时，只会引起一小部分的数据迁移。<br>新增节点时的变化情况：<br><img src="https://github.com/jjz921024/jjz921024.github.io/raw/master/images/consistenthash/hashinsert.png" alt="新增节点"><br>移除节点时的变化情况：<br><img src="https://github.com/jjz921024/jjz921024.github.io/raw/master/images/consistenthash/hashdelete.png" alt="移除节点"></p>
 </li>
 </ol>
 <h3 id="虚拟节点"><a href="#虚拟节点" class="headerlink" title="虚拟节点"></a>虚拟节点</h3><p>当机器较少时，机器的哈希值很大可能不能均匀分布在哈希环上，就会出现负载不均衡的情况。</p>
-<p>一致性哈希算法引入虚拟节点机制来解决这种数据倾斜的问题。即对每一台机器通过多个哈希函数映射到多个位置，这些位置上的节点称为虚拟节点。（也可以通过在IP或域名后增加编号后缀再通过同一哈希函数映射到不同位置）<br><img src="http://p5aycqumd.bkt.clouddn.com/consistenthash/13652786.jpg" alt="虚拟节点"></p>
+<p>一致性哈希算法引入虚拟节点机制来解决这种数据倾斜的问题。即对每一台机器通过多个哈希函数映射到多个位置，这些位置上的节点称为虚拟节点。（也可以通过在IP或域名后增加编号后缀再通过同一哈希函数映射到不同位置）<br><img src="https://github.com/jjz921024/jjz921024.github.io/raw/master/images/consistenthash/hashvitural.png" alt="虚拟节点"></p>
 <ul>
 <li>在增加节点时，会打破原来负载均衡的情况，新增节点会从原有节点分流数据的情况。把新增一个物理节点拆分成多个虚拟节点并均匀分布在哈希环上可以有效解决这个问题。</li>
 <li>在移除节点时，也会造成负载不均衡的情况。但当移除的物理节点已经被拆分成多个虚拟节点时，数据倾斜的情况也会减小很多。</li>
@@ -534,7 +1428,7 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="JJz">
       <meta itemprop="description" content="A place where JJz wirting">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/images/photo3.png">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -717,7 +1611,7 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="JJz">
       <meta itemprop="description" content="A place where JJz wirting">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/images/photo3.png">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -774,7 +1668,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-06-08 22:07:08" itemprop="dateModified" datetime="2019-06-08T22:07:08+08:00">2019-06-08</time>
+                <time title="修改时间：2019-06-08 23:46:22" itemprop="dateModified" datetime="2019-06-08T23:46:22+08:00">2019-06-08</time>
               
             
           </span>
@@ -922,7 +1816,7 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="JJz">
       <meta itemprop="description" content="A place where JJz wirting">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/images/photo3.png">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -979,7 +1873,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-06-08 22:07:08" itemprop="dateModified" datetime="2019-06-08T22:07:08+08:00">2019-06-08</time>
+                <time title="修改时间：2019-06-08 23:46:22" itemprop="dateModified" datetime="2019-06-08T23:46:22+08:00">2019-06-08</time>
               
             
           </span>
@@ -1153,6 +2047,8 @@
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
+              <img class="site-author-image" itemprop="image" src="/images/photo3.png" alt="JJz">
+            
               <p class="site-author-name" itemprop="name">JJz</p>
               <div class="site-description motion-element" itemprop="description">A place where JJz wirting</div>
           </div>
@@ -1164,7 +2060,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">4</span>
+                    <span class="site-state-item-count">8</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -1185,7 +2081,13 @@
                     
                       
                     
-                    <span class="site-state-item-count">3</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">6</span>
                     <span class="site-state-item-name">标签</span>
                   
                 </div>
