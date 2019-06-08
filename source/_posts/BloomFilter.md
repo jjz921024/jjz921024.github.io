@@ -52,6 +52,6 @@ $$ p=(1-e^{-\frac {nk} {m}}) $$
 ## 参考文章
 [程序员代码面试指南][2]
 
-  [1]: http://p5aycqumd.bkt.clouddn.com/bloomfilter/28382771.jpg
+  [1]: https://github.com/jjz921024/jjz921024.github.io/raw/master/images/bloomfilter/bloomfilter.png 
   [2]: https://book.douban.com/subject/26638586/
   [3]: https://github.com/jjz921024/AlgoCode/blob/master/src/other/BloomFilter.java
